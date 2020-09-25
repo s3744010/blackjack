@@ -155,34 +155,39 @@ public class GameEngine {
 		System.out.println("Dealer: " + dealer.getCardsOnHand().toString() + " Total: " + dealer.calculateResult());
 		System.out.println("Player: " + currentPlayer.getCardsOnHand().toString() + " Total: " + currentPlayer.calculateResult());
 	}
-
+	
+	
+	/**
+	* Settles the bet made by player considering all possible conditions win loss 
+	* between the player and the dealer.
+	* <p>
+	* Considering blackjack has been checked initially, the conditions for blackjack
+	* is redundant. This leaves us with a draw aka. "Push", "Win" and "Loss". The 
+	* additional condition where the player lose by "Bust" was also added.
+	* <p>
+	* WIN: Return the bet + bet
+	* LOSE: No changes - Initial bet has been taken from Player:[int money]
+	*
+	* @param  	void
+	* @return	void
+	* @see 		Dealer
+	* @see		Player
+	*/
 	public void applyWinLoss() {
-		if (currentPlayer.calculateResult() == dealer.calculateResult()) {
-			System.out.println("Push!");
+		
+		if ( currentPlayer.calculateResult() > 21 ) {
+			System.out.println("You have busted");
+		} else if ( currentPlayer.calculateResult() == dealer.calculateResult() ) {
+			System.out.println("You have pushed");
 			currentPlayer.setMoney(currentPlayer.getMoney() + currentPlayer.getBet());
-			System.out.println(currentPlayer.toString());
-			emptyHands();
-			return;
-		}
-
-		if (currentPlayer.calculateResult() == 21 && currentPlayer.getCardsOnHand().size() == 2) {
-			currentPlayer.setMoney(currentPlayer.getMoney() + currentPlayer.getBet() * 3 / 2);
-			System.out.println("BLACKJACK! You WON!");
-		}
-
-		if (dealer.calculateResult() == 21 && dealer.getCardsOnHand().size() == 2) {
-			System.out.println("Dealer BLACKJACK! You LOST!");
-		}
-
-		if (currentPlayer.calculateResult() > dealer.calculateResult() && currentPlayer.calculateResult() <= 21
-				|| dealer.calculateResult() > 21) {
+		} else if ( currentPlayer.calculateResult() < dealer.calculateResult() && dealer.calculateResult() <= 21 ) {
+			System.out.println("You have lost");
+		} else {
+			System.out.println("You have won");
 			currentPlayer.setMoney(currentPlayer.getMoney() + currentPlayer.getBet() * 2);
-			System.out.println("You WON!");
-			System.out.println(currentPlayer.toString());
-		} else if (currentPlayer.calculateResult() < dealer.calculateResult() || currentPlayer.calculateResult() > 21) {
-			System.out.println("You Lost!");
-			System.out.println(currentPlayer.toString());
 		}
+		
+		System.out.println(currentPlayer.toString());
 		emptyHands();
 	}
 	

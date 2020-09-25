@@ -13,6 +13,8 @@ public class GameEngine {
 
 	private List<Card> cards = new ArrayList<Card>();
 	private List<Card> deckCards = new ArrayList<Card>();
+	
+	public final int MAXCARDSUM = 21;
 
 	private Dealer dealer;
 	private Player currentPlayer;
@@ -175,12 +177,12 @@ public class GameEngine {
 	*/
 	public void applyWinLoss() {
 		
-		if ( currentPlayer.calculateResult() > 21 ) {
+		if ( currentPlayer.calculateResult() > MAXCARDSUM ) {
 			System.out.println("You have busted");
 		} else if ( currentPlayer.calculateResult() == dealer.calculateResult() ) {
 			System.out.println("You have pushed");
 			currentPlayer.setMoney(currentPlayer.getMoney() + currentPlayer.getBet());
-		} else if ( currentPlayer.calculateResult() < dealer.calculateResult() && dealer.calculateResult() <= 21 ) {
+		} else if ( currentPlayer.calculateResult() < dealer.calculateResult() && dealer.calculateResult() <= MAXCARDSUM ) {
 			System.out.println("You have lost");
 		} else {
 			System.out.println("You have won");

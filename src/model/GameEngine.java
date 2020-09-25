@@ -176,17 +176,22 @@ public class GameEngine {
 	* @see		Player
 	*/
 	public void applyWinLoss() {
+		int playerCardSum = currentPlayer.calculateResult();
+		int dealerCardSum = dealer.calculateResult();
+		int playerMoney = currentPlayer.getMoney();
+		int playerBet = currentPlayer.getBet();
 		
-		if ( currentPlayer.calculateResult() > MAXCARDSUM ) {
+		if ( playerCardSum > MAXCARDSUM ) {
 			System.out.println("You have busted");
-		} else if ( currentPlayer.calculateResult() == dealer.calculateResult() ) {
+		} else if ( playerCardSum == dealerCardSum ) {
 			System.out.println("You have pushed");
-			currentPlayer.setMoney(currentPlayer.getMoney() + currentPlayer.getBet());
-		} else if ( currentPlayer.calculateResult() < dealer.calculateResult() && dealer.calculateResult() <= MAXCARDSUM ) {
+			currentPlayer.setMoney(playerMoney + playerBet);
+		} else if ( (playerCardSum < dealerCardSum) && 
+				(dealerCardSum <= MAXCARDSUM)) {
 			System.out.println("You have lost");
 		} else {
 			System.out.println("You have won");
-			currentPlayer.setMoney(currentPlayer.getMoney() + currentPlayer.getBet() * 2);
+			currentPlayer.setMoney(playerMoney + playerBet * 2);
 		}
 		
 		System.out.println(currentPlayer.toString());
